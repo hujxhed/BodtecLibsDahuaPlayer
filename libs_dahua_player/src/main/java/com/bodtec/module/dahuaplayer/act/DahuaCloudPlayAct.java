@@ -34,7 +34,6 @@ import com.android.dahua.dhplaycomponent.common.PlayStatusType;
 import com.android.dahua.dhplaycomponent.windowcomponent.entity.ControlType;
 import com.android.dahua.dhplaycomponent.windowcomponent.window.PlayWindow;
 import com.bodtec.module.dahuaplayer.R;
-import com.bodtec.module.dahuaplayer.utils.Base64Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -223,25 +222,6 @@ public class DahuaCloudPlayAct extends AppCompatActivity implements View.OnClick
 
     }
 
-    /**
-     * 秘钥转换
-     */
-    public static String coverEncryptKey(String encryptId, String encryptKey) {
-        if (TextUtils.isEmpty(encryptId) || TextUtils.isEmpty(encryptKey)) {
-            return "";
-        }
-        byte[] inId = Base64Utils.decode(encryptId);
-        byte[] inKey = Base64Utils.decode(encryptKey);
-        byte[] outKey = new byte[inId.length + inKey.length + 1];
-        outKey[0] = 0x01;
-        for (int i = 0; i < inId.length; i++) {
-            outKey[i + 1] = inId[i];
-        }
-        for (int i = 0; i < inKey.length; i++) {
-            outKey[i + inId.length + 1] = inKey[i];
-        }
-        return Base64Utils.encode(outKey).replaceAll("\n", "");
-    }
 
     /**
      * 开始播放
