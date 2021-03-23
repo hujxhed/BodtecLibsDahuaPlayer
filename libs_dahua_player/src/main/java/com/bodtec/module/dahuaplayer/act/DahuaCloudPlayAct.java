@@ -39,7 +39,7 @@ import com.bodtec.module.dahuaplayer.utils.Base64Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayOnlineActivity extends AppCompatActivity implements View.OnClickListener {
+public class DahuaCloudPlayAct extends AppCompatActivity implements View.OnClickListener {
 
     public static final String KEY_SN_CODE = "key_sn_code";
     public static final String KEY_TOKEN = "key_token";
@@ -73,7 +73,7 @@ public class PlayOnlineActivity extends AppCompatActivity implements View.OnClic
     protected String[] recordPath;
 
     public static void open(Context context, String token, String snCode) {
-        Intent intent = new Intent(context, PlayOnlineActivity.class);
+        Intent intent = new Intent(context, DahuaCloudPlayAct.class);
         intent.putExtra(KEY_TOKEN, token);
         intent.putExtra(KEY_SN_CODE, snCode);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

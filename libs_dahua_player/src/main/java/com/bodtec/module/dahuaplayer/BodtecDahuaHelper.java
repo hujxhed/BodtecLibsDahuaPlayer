@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.bodtec.module.dahuaplayer.act.PlayOnlineActivity;
+import com.bodtec.module.dahuaplayer.act.DahuaCloudPlayAct;
 
 
 /**
@@ -37,7 +37,7 @@ public class BodtecDahuaHelper {
         if (null == context || TextUtils.isEmpty(token) || TextUtils.isEmpty(snCode)) {
             Toast.makeText(context, "参数错误，播放失败！", Toast.LENGTH_SHORT).show();
         } else {
-            PlayOnlineActivity.open(context, token, snCode);
+            DahuaCloudPlayAct.open(context, token, snCode);
         }
     }
 

@@ -12,7 +12,7 @@
 
     <application>
         <activity
-            android:name="com.bodtec.module.dahuaplayer.act.PlayOnlineActivity"
+            android:name="com.bodtec.module.dahuaplayer.act.DahuaCloudPlayAct"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
     </application>
