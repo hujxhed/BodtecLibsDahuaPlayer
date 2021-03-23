@@ -1,0 +1,3 @@
+include ':libs_dahua_player'
+include ':app'
+rootProject.name = "BodtecLibsDahuaPlayer"

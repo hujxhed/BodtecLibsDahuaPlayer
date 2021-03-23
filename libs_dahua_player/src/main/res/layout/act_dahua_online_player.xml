@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/cl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="12dp"
+            android:src="@drawable/icon_common_back" />
+
+        <TextView
+            android:id="@+id/tv_channel_name"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:lines="1"
+            android:text="实时预览"
+            android:textColor="#333333"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_playWindow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.android.dahua.dhplaycomponent.windowcomponent.window.PlayWindow
+            android:id="@+id/playWindow"
+            PlayWinBG="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            tools:background="@android:color/black" />
+
+        <ImageView
+            android:id="@+id/iv_full_screen"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:padding="7dp"
+            android:src="@drawable/icon_full_screen" />
+    </FrameLayout>
+</LinearLayout>
