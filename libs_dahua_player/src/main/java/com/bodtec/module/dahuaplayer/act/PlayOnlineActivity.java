@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -14,6 +15,9 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.business.adapter.DataAdapterImpl;
 import com.android.business.adapter.DataAdapterInterface;
@@ -35,7 +39,7 @@ import com.bodtec.module.dahuaplayer.utils.Base64Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayOnlineActivity extends BaseActivity implements View.OnClickListener {
+public class PlayOnlineActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String KEY_SN_CODE = "key_sn_code";
     public static final String KEY_TOKEN = "key_token";
@@ -68,6 +72,67 @@ public class PlayOnlineActivity extends BaseActivity implements View.OnClickList
     private boolean isPlaying = false;
     protected String[] recordPath;
 
+    public static void open(Context context, String token, String snCode) {
+        Intent intent = new Intent(context, PlayOnlineActivity.class);
+        intent.putExtra(KEY_TOKEN, token);
+        intent.putExtra(KEY_SN_CODE, snCode);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.act_dahua_online_player);
+        initView();
+        initData();
+        doSomething();
+    }
+
+    protected void initView() {
+        mIvBack = findViewById(R.id.iv_back);
+        mClTitle = findViewById(R.id.cl_title);
+        mPlayWindow = findViewById(R.id.playWindow);
+        mTvChannelName = findViewById(R.id.tv_channel_name);
+        mIvFullScreen = findViewById(R.id.iv_full_screen);
+        mIvBack.setOnClickListener(this);
+        mIvFullScreen.setOnClickListener(this);
+    }
+
+    protected void initData() {
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay()
+                .getMetrics(metric);
+        mScreenWidth = metric.widthPixels; // 屏幕宽度（像素）
+        mScreenHeight = metric.heightPixels; // 屏幕高度（像素）
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    protected void doSomething() {
+        mChannelInfo = new ChannelInfo();
+        mChannelInfo.setChnSncode(getIntent().getStringExtra(KEY_SN_CODE));
+        mToken = getIntent().getStringExtra(KEY_TOKEN);
+        dataAdapterInterface = DataAdapterImpl.getInstance();
+
+        mPlayManager = new PlayManagerProxy();
+        //初始化窗口数量，默认显示4个窗口，最多16窗口，若设置单窗口均设置为1
+        mPlayManager.init(this, mPlayWindow);
+        //设置播放监听
+        // set play monitor.
+        mPlayManager.setOnMediaPlayListener(iMediaPlayListener);
+        //设置窗口操作监听
+        mPlayManager.setOnOperationListener(iOperationListener);
+
+        // set the intercom monitor.
+        mPlayManager.setOnTalkListener(new ITalkListener());
+
+        initCommonWindow();
+
+        channelInfoList.add(mChannelInfo);
+
+        mPlayManager.addCameras(getCameras());
+    }
+
     @SuppressLint("HandlerLeak")
     protected Handler mPlayOnlineHander = new Handler() {
         public void handleMessage(Message msg) {
@@ -95,66 +160,6 @@ public class PlayOnlineActivity extends BaseActivity implements View.OnClickList
             }
         }
     };
-
-    public static void open(Context context, String token, String snCode) {
-        Intent intent = new Intent(context, PlayOnlineActivity.class);
-        intent.putExtra(KEY_TOKEN, token);
-        intent.putExtra(KEY_SN_CODE, snCode);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
-    @Override
-    protected int initContentView() {
-        return R.layout.act_dahua_online_player;
-    }
-
-    @Override
-    protected void initView() {
-        mIvBack = findViewById(R.id.iv_back);
-        mClTitle = findViewById(R.id.cl_title);
-        mPlayWindow = findViewById(R.id.playWindow);
-        mTvChannelName = findViewById(R.id.tv_channel_name);
-        mIvFullScreen = findViewById(R.id.iv_full_screen);
-        mIvBack.setOnClickListener(this);
-        mIvFullScreen.setOnClickListener(this);
-    }
-
-    @Override
-    protected void initData() {
-        DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay()
-                .getMetrics(metric);
-        mScreenWidth = metric.widthPixels; // 屏幕宽度（像素）
-        mScreenHeight = metric.heightPixels; // 屏幕高度（像素）
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    protected void doSomething() {
-        mChannelInfo = new ChannelInfo();
-        mChannelInfo.setChnSncode(getIntent().getStringExtra(KEY_SN_CODE));
-        mToken = getIntent().getStringExtra(KEY_TOKEN);
-        dataAdapterInterface = DataAdapterImpl.getInstance();
-
-        mPlayManager = new PlayManagerProxy();
-        //初始化窗口数量，默认显示4个窗口，最多16窗口，若设置单窗口均设置为1
-        mPlayManager.init(this, mPlayWindow);
-        //设置播放监听
-        // set play monitor.
-        mPlayManager.setOnMediaPlayListener(iMediaPlayListener);
-        //设置窗口操作监听
-        mPlayManager.setOnOperationListener(iOperationListener);
-
-        // set the intercom monitor.
-        mPlayManager.setOnTalkListener(new ITalkListener());
-
-        initCommonWindow();
-
-        channelInfoList.add(mChannelInfo);
-
-        mPlayManager.addCameras(getCameras());
-    }
 
     @Override
     protected void onResume() {
