@@ -15,7 +15,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        mavenLocal()
+        maven { url "http://dev.bodtec.cn:9004/repository/bodtec-android-libs/" }
     }
 }
 

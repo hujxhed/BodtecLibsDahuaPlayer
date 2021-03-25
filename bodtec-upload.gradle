@@ -1,0 +1,14 @@
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://dev.bodtec.cn:9004/repository/bodtec-android-libs/") {
+                authentication(userName: "hujx", password: "20060619ab")
+            }
+            pom.version = PUBLISH_VERSION
+            pom.artifactId = PUBLISH_ARTIFACT_ID
+            pom.groupId = "cn.bodtec.libs"
+        }
+    }
+}
