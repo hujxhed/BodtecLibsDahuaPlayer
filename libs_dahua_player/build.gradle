@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 29
@@ -18,6 +19,19 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://dev.bodtec.cn:9004/repository/bodtec-android-libs/") {
+                authentication(userName: "hujx", password: "20060619ab")
+            }
+            pom.version = "0.0.1"
+            pom.artifactId = "dahuaplayer"
+            pom.groupId = "cn.bodtec.libs"
         }
     }
 }
